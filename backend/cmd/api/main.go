@@ -11,8 +11,7 @@ import (
 	"github.com/BenjaminAGH/nocturnescope/backend/internal/infrastructure/security"
 	"github.com/BenjaminAGH/nocturnescope/backend/internal/infrastructure/session"
 	"github.com/BenjaminAGH/nocturnescope/backend/internal/interface/http/routes"
-	authuc "github.com/BenjaminAGH/nocturnescope/backend/internal/usecase/service"
-	useruc "github.com/BenjaminAGH/nocturnescope/backend/internal/usecase/service"
+	"github.com/BenjaminAGH/nocturnescope/backend/internal/usecase/service"
 )
 
 func main() {
@@ -21,11 +20,11 @@ func main() {
 	db := database.Connect()
 
 	userRepo := repository.NewUserGormRepository(db)
-	userService := useruc.NewUserService(userRepo)
+	userService := service.NewUserService(userRepo)
 
 	jwtService := security.NewJWTServiceFromEnv()
 	sessionStore := session.NewMemoryStore()
-	authService := authuc.NewAuthService(userRepo, jwtService, sessionStore)
+	authService := service.NewAuthService(userRepo, jwtService, sessionStore)
 
 	app := fiber.New()
 

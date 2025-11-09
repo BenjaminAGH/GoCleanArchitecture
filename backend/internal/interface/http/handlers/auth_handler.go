@@ -4,16 +4,15 @@ import (
 	"github.com/gofiber/fiber/v2"
 
 	"github.com/BenjaminAGH/nocturnescope/backend/internal/domain"
-	authuc "github.com/BenjaminAGH/nocturnescope/backend/internal/usecase/service"
-	useruc "github.com/BenjaminAGH/nocturnescope/backend/internal/usecase/service"
+	"github.com/BenjaminAGH/nocturnescope/backend/internal/usecase/service"
 )
 
 type AuthHandler struct {
-	authService *authuc.AuthService
-	userService  *useruc.UserService
+	authService *service.AuthService
+	userService  *service.UserService
 }
 
-func NewAuthHandler(authService *authuc.AuthService, userService *useruc.UserService) *AuthHandler {
+func NewAuthHandler(authService *service.AuthService, userService *service.UserService) *AuthHandler {
 	return &AuthHandler{
 		authService: authService,
 		userService: userService,
@@ -49,7 +48,7 @@ func (h *AuthHandler) Register(c *fiber.Ctx) error {
 		return c.Status(400).JSON(fiber.Map{"error": "bad request"})
 	}
 
-	user, err := h.userService.Create(useruc.CreateUserInput{
+	user, err := h.userService.Create(service.CreateUserInput{
 		Username: body.Username,
 		Email:    body.Email,
 		Role:     body.Role,
